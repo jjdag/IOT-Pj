@@ -1,0 +1,99 @@
+-- DEFINE table_name = 
+-- DROP DATABASE logement;
+
+CREATE TABLE Logement (LogID INTEGER PRIMARY KEY,
+                        Addr VARCHAR,
+                        IPAddr CHAR(20),
+                        Insertion DATE);
+
+CREATE TABLE Piece (PieceID INTEGER PRIMARY KEY,
+                    Coord CHAR(3),
+                    Func VARCHAR); -- Func shall be the likes of "living3", i.e. Purpose&roomNum
+
+CREATE TABLE Capteur (CaptID INTEGER PRIMARY KEY,
+                    Type TEXT, -- temp, humi, light, etc
+                    RefComm TEXT,
+                    RefPiece TEXT,
+                    Port INT,
+                    Insertion DATE);
+
+CREATE TABLE MeasParam (MeasParamID INTEGER PRIMARY KEY,
+                        Type TEXT,
+                        Precision INT, -- percentage for ex
+                        Unite TEXT);
+
+CREATE TABLE Meas (MeasID INTEGER PRIMARY KEY,
+                    MeasDet TEXT,
+                    Valeur INT,
+                    Insertion DATE);
+
+CREATE TABLE Facture (FactID INTEGER PRIMARY KEY,
+                    Type TEXT, -- for which val, temp ? humi? etc
+                    Montant INT,
+                    Conso INT, -- ex how many watts for elec
+                    Periode DATE);
+
+
+-- 1 logement
+INSERT INTO Logement (LogID, Addr, IPAddr, Insertion) VALUES (NULL, '10 rue Dulac', '127.0.0.1', CURRENT_TIMESTAMP); 
+
+-- DELETE FROM Capteur WHERE CaptID = 1;                     
+
+-- ALTER TABLE Piece DROP COLUMN Coord;
+-- ALTER TABLE Piece ADD COLUMN Coord TEXT;
+
+-- 4 pieces dans le logement
+INSERT INTO Piece (PieceID, Func, Coord)
+VALUES (NULL, 'Entree0_1', '0, 0, 0'),
+        (NULL, 'Living0_1', '5, 0, 0'),
+        (NULL, 'Kitchen0_1', '5, -5, 0'),
+        (NULL, 'Hall0_1', '5, -1, 0');
+
+
+-- 4 types de capteurs/actionneurs
+-- INSERT INTO Piece (PieceID, Func, Coord)
+-- VALUES (NULL, 'Entree0_1', '0, 0, 0'),
+--         (NULL, 'Living0_1', '5, 0, 0'),
+--         (NULL, 'Kitchen0_1', '5, -5, 0'),
+--         (NULL, 'Hall0_1', '5, -1, 0');
+
+
+-- 2 capteurs/actionneurs
+INSERT INTO Capteur (CaptID, Type, RefComm, RefPiece, Port, Insertion)
+VALUES (NULL, 'Temperature', 'REFTEMP', '1LIVING0_1', 27, '05-07-2023'),
+        (NULL, 'Humidite', 'REFHUM', '1KITCHEN0_1', 20, '03-01-2023'),
+        (NULL, 'Mouvement', 'REFMVT', '1HALL0_1', 80, '11-09-2023');
+
+curl -X POST http://localhost:3000/capteur/ -H "Content-Type: application/json" -d "{\"Type\":\"Temperature\", \"RefComm\":\"REFTEMP\", \"RefPiece\":\"Living0_1\", \"Port\":\"27\"}"
+
+-- 2 mesures par capteur/actionneur
+INSERT INTO Meas (MeasID, MeasDet, Valeur, Insertion)
+VALUES (NULL, 'TEMP_Living0_1', 16, '11-12-2024 11:00:00'),
+        (NULL, 'TEMP_Living0_1', 20, '03-05-2024 8:00:00'),
+        (NULL, 'HUM_Kitchen0_1', 27, '11-12-2024 11:00:00'),
+        (NULL, 'HUM_Kitchen0_1', 33, '03-05-2024 8:00:00'),
+        (NULL, 'MVT_Hall0_1', 1, '11-12-2024 11:00:00'),
+        (NULL, 'MVT_Hall0_1', 0, '03-05-2024 8:00:00');
+
+
+-- unites de mesure pour les capteurs crees
+INSERT INTO MeasParam (MeasParamID, Type, Precision, Unite)
+VALUES (NULL, 'Temperature', 98.9, 'Degre Celsius'),
+        (NULL, 'Humidite', 98.9, 'Pourcentage'),
+        (NULL, 'Mouvement', 98.9, 'Binaire');
+
+
+-- 3 factures
+INSERT INTO Facture (FactID, Type, Montant, Conso, Periode)
+VALUES (NULL, 'TEMP_Living0_1', 300, 25, '2024'),
+        (NULL, 'HUM_Kitchen0_1', 150, 15, '2024'),
+        (NULL, 'MVT_Hall0_1', 165, 10, '2024');
+
+
+curl -X POST http://localhost:3000/logement -H "Content-Type: application/json" -d "{\"Addr\":\"115 boulevard des Capucines\", \"IPAddr\":\"132.74.0.10\"}"
+
+curl -X POST http://localhost:3000/logement/1/factures -H "Content-Type: application/json" -d "{\"Addr\":\"115 boulevard des Capucines\", \"IPAddr\":\"132.74.0.10\"}"
+
+curl -X POST http://localhost:3000/logement/1/Pieces -H "Content-Type: application/json" -d "{\"Func\":\"Hall0_1\", \"Coord\":\"5, -1, 0\"}"
+
+curl -X POST http://localhost:3000/capteur -H "Content-Type: application/json" -d "{""Type"": ""Temperature"", ""RefComm"": ""REFTEMP"", ""RefPiece"": ""1LIVING0_1"", ""port"": 27}"
