@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter un Logement</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body class="bg-gray-800 text-gray-100 font-sans">
+
+    <header class="bg-gradient-to-r from-red-700 to-brown-800 text-white p-6 shadow-lg">
+        <div class="text-2xl font-bold uppercase tracking-wide">
+            <i class="fas fa-leaf mr-2"></i> EcoLodge
+        </div>
+    </header>
+
+    <div class="max-w-lg mx-auto mt-8 bg-white p-8 rounded-lg shadow-xl">
+        <h2 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Ajouter un Nouveau Logement</h2>
+
+        <form action="/logement/creer" method="POST">
+
+            <div class="mb-6">
+                <label for="address" class="block text-lg text-gray-700 font-medium mb-2">Adresse</label>
+                <div class="relative">
+                    <input type="text" id="address" name="address" required
+                        class="w-full px-4 py-2 bg-gray-200 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                    <i class="fas fa-map-marker-alt absolute top-3 right-3 text-gray-500"></i>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <label for="ipaddress" class="block text-lg text-gray-700 font-medium mb-2">Adresse IP</label>
+                <div class="relative">
+                    <input type="text" id="ipaddress" name="ipaddress" required
+                        class="w-full px-4 py-2 bg-gray-200 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                    <i class="fas fa-network-wired absolute top-3 right-3 text-gray-500"></i>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <button type="submit"
+                    class="w-full py-3 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+                    Ajouter Logement
+                </button>
+            </div>
+
+            <div class="text-center">
+                <a href="/logement"
+                    class="inline-block py-2 px-4 text-gray-700 bg-gray-300 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                    Annuler
+                </a>
+            </div>
+
+            <% if (errorMessage) { %>
+                <div class="text-red-500 text-center mt-4">
+                    <p><%= errorMessage %></p>
+                </div>
+            <% } %>
+        </form>
+    </div>
+
+</body>
+
+</html>

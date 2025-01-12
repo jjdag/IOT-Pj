@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails Logement : <%= lgmtdata.LogID %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="bg-gradient-to-r from-gray-800 via-red-700 to-yellow-600 font-sans text-gray-100">
+
+    <header class="bg-gradient-to-r from-red-700 to-brown-800 text-white p-6 shadow-lg flex justify-between items-center">
+        <div class="text-2xl font-bold uppercase tracking-wide">
+            <i class="fas fa-leaf mr-2"></i> EcoLodge
+        </div>
+        <div class="w-1/3">
+            <input type="text" placeholder="Search for a room..." class="w-full p-2 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900">
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-xl p-6 space-y-6">
+            <div>
+                <h2 class="text-3xl font-semibold text-red-600"><%= lgmtdata.Addr %></h2>
+                <div class="text-lg text-gray-600">
+                    <p><strong>ID : </strong> <%= lgmtdata.LogID %></p>
+                    <p><strong>Adresse IP : </strong> <%= lgmtdata.IPAddr %></p>
+                    <p><strong>Date d'insertion : </strong> <%= lgmtdata.Insertion %></p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <h3 class="text-2xl font-semibold text-gray-800">Pièces</h3>
+                <% pieces.forEach(function(piece, index) { %>
+                    <a href="/capteur/<%- piece.Func %>" class="bg-white rounded-xl shadow-xl overflow-hidden transform transition-all hover:scale-105 hover:shadow-2xl">
+                    <div class="bg-gray-100 p-4 rounded-lg shadow-md">
+                        <h4 class="text-xl font-semibold text-yellow-500"><%= piece.Func %></h4>
+                        <p class="text-gray-700">Coordonnées (par rapport a l'accès principal du logement) : <%= piece.Coord %></p>
+                    </div>
+                    </a>
+                <% }) %>
+            </div>
+
+            <div class="mt-8 text-center">
+                <a href="/factures/<%= lgmtdata.LogID %>" class="bg-blue-600 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Factures et Consommation
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <footer class="bg-red-700 text-white py-6 mt-8">
+        <div class="text-center">
+            <p>&copy; 2024 EcoLodge - All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
