@@ -101,11 +101,12 @@ app.get('/factures/:LogID', async (req, res) => {
 
     const annees = factures.map(f => f.Periode);
     const consumptionData = factures.map(f => f.Conso);
+    const montants = factures.map(f => f.Montant);
     
     //factures.forEach( facture => console.log(facture.FactID))
 
     // 
-    res.render('factures', { lgmt : lgmt[0], factures, annees, consumptionData });
+    res.render('factures', { lgmt : lgmt[0], factures, annees, consumptionData, montants });
 
 });
 

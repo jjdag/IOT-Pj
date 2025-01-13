@@ -28,6 +28,11 @@
 
             </div>
 
+            <div class="mb-6">
+                <canvas id="facturesChart" width="400" height="200"></canvas>
+
+            </div>
+
             <div class="space-y-4">
                 <h3 class="text-2xl font-semibold text-gray-800">Factures par an</h3>
                 <% factures.forEach( function(facture) { %>
@@ -50,12 +55,12 @@
     </footer>
 
     <script type="text/javascript">
-        const ctx = document.getElementById('consumptionChart').getContext('2d');
+        const ctx1 = document.getElementById('consumptionChart').getContext('2d');
         // console.log(<%- annees %>); 
         // console.log(consumptionData);
         // alert("not dead");
     
-        const consumptionChart = new Chart(ctx, {
+        const consumptionChart = new Chart(ctx1, {
             type: 'bar', 
             data: { 
                 labels: <%- JSON.stringify(annees); %> ,
@@ -73,7 +78,35 @@
                 responsive: true, 
                 scales: { 
                     y: { 
-                         beginAtZero: true
+                         beginAtZero: true, 
+                         suggestedMax: Math.max(...<%- JSON.stringify(consumptionData)%>)*1.1
+                    }
+                } 
+            } 
+        }); 
+
+
+        const ctx2 = document.getElementById('facturesChart').getContext('2d');
+        // const topchartval2 = Math.max(...<%- JSON.stringify(montants)%>)*1.1;
+    
+        const facturesChart = new Chart(ctx2, {
+            type: 'bar', 
+            data: { 
+                labels: <%- JSON.stringify(annees); %> ,
+                datasets: [{ 
+                    label: 'Factures (euros)', 
+                    data:  <%- JSON.stringify(montants); %>,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderWidth: 2, 
+                    }]
+                    }, 
+            options: { 
+                responsive: true, 
+                scales: { 
+                    y: { 
+                         beginAtZero: true,
+                         suggestedMax: Math.max(...<%- JSON.stringify(montants)%>)*1.1
                     }
                 } 
             } 
