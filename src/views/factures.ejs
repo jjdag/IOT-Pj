@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Factures et Consommation - Logement <%= lgmt.LogID %></title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="bg-gradient-to-r from-gray-800 via-red-700 to-yellow-600 font-sans text-gray-100">
@@ -23,8 +24,7 @@
             <h2 class="text-3xl font-semibold text-red-600 text-center mb-6">Factures et Consommation - Logement <%= lgmt.LogID %></h2>
 
             <div class="mb-6">
-                <!-- <canvas id="consumptionChart"></canvas> -->
-                <img src="/img/chart.png" alt="chart img path">
+                <canvas id="consumptionChart" width="400" height="200"></canvas>
 
             </div>
 
@@ -49,29 +49,35 @@
         </div>
     </footer>
 
-    <script>
+    <script type="text/javascript">
         const ctx = document.getElementById('consumptionChart').getContext('2d');
+        // console.log(<%- annees %>); 
+        // console.log(consumptionData);
+        // alert("not dead");
+    
         const consumptionChart = new Chart(ctx, {
-            type: 'line', 
-            data: {
-                labels: JSON.stringify(annees),
-                datasets: [{
-                    label: 'Consommation Électrique (kWh)',
-                    data: JSON.stringify(consumptionData), 
-                    borderColor: 'rgba(255, 99, 132, 1)',
+            type: 'bar', 
+            data: { 
+                labels: <%- JSON.stringify(annees); %> ,
+                // labels: ["a", "b", "c", "d", "e"],
+                datasets: [{ 
+                    label: 'Consommation Électrique (kWh)', 
+                    data:  <%- JSON.stringify(consumptionData); %>,
+                    // data : [1, 2, 3, 4, 5],
+                    borderColor: 'rgba(255, 99, 132, 1)', 
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderWidth: 2,
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
+                    borderWidth: 2, 
+                    }] 
+                    }, 
+            options: { 
+                responsive: true, 
+                scales: { 
+                    y: { 
+                         beginAtZero: true
                     }
-                }
-            }
-        });
+                } 
+            } 
+        }); 
     </script>
 
 </body>
